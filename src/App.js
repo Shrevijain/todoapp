@@ -1,39 +1,41 @@
-// import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
-// import {Demo} from './components/Demo';
-// import Demo1 from './components/Demo1';
-// import Parent from './components/Parent';
-//  import Demo2 from './components/Demo2';
-import ToDoList from './components/ToDoList';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faTrash, faPlus, faEdit } from "@fortawesome/free-solid-svg-icons";
-library.add(faTrash, faEdit, faPlus);
-
+import Header from './Header';
+import data from './data.json';
+import TodoList from './TodoList';
+import ToDoForm from './ToDoForm';
 
 function App() {
+  const [todoList, setTodoList]= useState(data);
+
+  const handleToggle = (id) => {
+    let mapped = todoList.map(task =>{
+      return task.id == id ? {...task, complete: !task.complete } : {...task};
+    });
+    setTodoList(mapped);
+  }
+
+  const handleFilter = () =>{
+    let filtered = todoList.filter(task => {
+      return !task.complete;
+    });
+    setTodoList(filtered);
+  }
+
+  const addTask = (userInput) => {
+    let copy = [...todoList];
+    copy = [...copy, { id: todoList.length + 1, task: userInput, complete: false }];
+    setTodoList(copy);
+  }
+
   return (
     <div className="App">
-      {/* <Demo></Demo>
-      <Demo1></Demo1> */}
-      {/* <Parent ></Parent> */}
-      {/* <Demo2></Demo2> */}
-      <ToDoList></ToDoList>
-      {/* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header> */}
+      <Header></Header>
+      <TodoList todoList={todoList} handleToggle={handleToggle} handleFilter={handleFilter}/>
+      <ToDoForm addTask={addTask}/>
     </div>
   );
 }
 
 export default App;
+

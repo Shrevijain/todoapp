@@ -8,7 +8,7 @@ const ToDoForm = ({ addTask }) => {
     const handleChange = (e) => {
         setUserInput(e.currentTarget.value);
     }
-    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         addTask(userInput);
@@ -24,4 +24,3 @@ const ToDoForm = ({ addTask }) => {
 }
 
 export default ToDoForm;
-

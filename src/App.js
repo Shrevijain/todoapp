@@ -4,8 +4,10 @@ import Header from "./Header";
 import data from "./data.json";
 import TodoList from "./TodoList";
 import ToDoForm from "./ToDoForm";
-
+import Select from "react-select";
+//import { Link, Route, Routes } from "react-router-dom";
 import Table from "./Table";
+// import { faRandom } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
   const [todoList, setTodoList] = useState(data);
@@ -34,7 +36,8 @@ function App() {
     ];
     setTodoList(copy);
   };
-
+  const [tableData, setTableData] = useState([]);
+  const [selected, setSelected] = useState({ SelectOption: "" });
   const [formInputData, setformInputData] = useState({
     StudentName: "",
     University: "",
@@ -43,12 +46,24 @@ function App() {
     subject3: "",
     gender: "",
   });
-  const [tableData, setTableData] = useState([]);
+
+  const option = [
+    { name: "FilterOp", value: "aa", label: "aa" },
+    { name: "FilterOp", value: "bb", label: "bb" },
+    { name: "FilterOp", value: "cc", label: "cc" },
+    { name: "FilterOp", value: "dd", label: "dd" },
+  ];
 
   const handleInputChange = (e) => {
     let val = e.target.type === "checkbox" ? e.target.checked : e.target.value;
-    if (e.target.checked === true) val = e.target.value;
+    if (e.target.checked) {
+      val = e.target.value;
+    }
     setformInputData((ans) => ({ ...ans, [e.target.name]: val }));
+  };
+
+  const handleSelectChange = (e) => {
+    setSelected(e.value);
   };
 
   const handleSubmit = (event) => {
@@ -70,20 +85,40 @@ function App() {
         gender: "",
       });
     }
-    console.log(formInputData);
   };
 
-  //  function handleInputChange(e) {
-  //    const val = e.target.type === "checkbox" ? e.target.checked : e.target.value;
+  const handleDeleteRow = (index) => {
+    const newRow = [...tableData];
+    const deleteRow = tableData.findIndex((data) => data.index === index);
+    newRow.splice(deleteRow, 1);
+    setTableData(newRow);
+  };
 
-  //    setformInputData((ans) => ({
-  //     ...ans,[e.target.name]: val
-  //    }));
-  //  }
+  const handleFilterSubmit = (event) => {
+    event.preventDefault();
+    //console.log(tableData);
+    //console.log(selected);
+    if (!selected) {
+      return tableData;
+    }
+
+    let filtered = tableData.filter((task) => {
+      //console.log(task.University, selected);
+      return task.University == selected;
+    });
+
+    setTableData(filtered);
+    console.log(filtered);
+  };
 
   return (
     <div className="App">
+      <br />
+      <a href="NewPage.js" target="_blank">
+        New Page
+      </a>
       <Header></Header>
+
       <TodoList
         todoList={todoList}
         handleToggle={handleToggle}
@@ -113,20 +148,13 @@ function App() {
               <option className="form-control" name="University" value="">
                 --Select your Universty--
               </option>
-              <option className="form-control" name="University">
-                aa
-              </option>
-              <option className="form-control" name="University">
-                bb
-              </option>
-              <option className="form-control" name="University">
-                cc
-              </option>
-              <option className="form-control" name="University">
-                dd
-              </option>
+              <option name="University">aa</option>
+              <option name="University">bb</option>
+              <option name="University">cc</option>
+              <option name="University">dd</option>
             </select>
           </div>
+
           <div className="col">
             <label>Subject</label>
             <br></br>
@@ -161,17 +189,17 @@ function App() {
             <input
               type="radio"
               name="gender"
-              checked={formInputData.gender === "male"}
+              checked={formInputData.gender === "Male"}
               onChange={handleInputChange}
-              value="male"
+              value="Male"
             />
             <label>Male</label>
             <input
               type="radio"
               name="gender"
-              checked={formInputData.gender === "female"}
+              checked={formInputData.gender === "Female"}
               onChange={handleInputChange}
-              value="female"
+              value="Female"
             />
             <label>Female</label>
           </div>
@@ -180,9 +208,44 @@ function App() {
           </div>
         </div>
       </form>
-      <Table tableData={tableData} />
+
+      <br />
+      <br />
+
+      <form onSubmit={handleFilterSubmit}>
+        <div className="form-row row">
+          <div className="col">
+            <Select options={option} onChange={handleSelectChange} />
+          </div>
+
+          {/* <div className="col">
+            <select
+              list="data"
+              name="SelectOption"
+              onChange={handleSelectChange}
+              value={selected.SelectOption}
+              placeholder="Select your University"
+            >     
+            <option name="SelectedOption" value="">Filter University</option>      
+              <option name="SelectOption">aa</option>
+              <option name="SelectOption">bb</option>
+              <option name="SelectOption">cc</option>
+              <option name="SelectOption">dd</option>
+              </select> 
+          </div> */}
+
+          <div className="col">
+            <input type="submit" className="btn btn-primary" />
+          </div>
+        </div>
+      </form>
+      <br />
+      <br />
+      <Table tableData={tableData} handleDeleteRow={handleDeleteRow} />
     </div>
   );
 }
 
 export default App;
+{
+}

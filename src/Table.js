@@ -17,7 +17,7 @@ function Table({ tableData, handleDeleteRow, handleEditRow, defaultValue }) {
           return (
             defaultValue || (
               <tr key={index}>
-                <td>{index}</td>
+                <td>{index + 1}</td>
                 <td>{data.StudentName}</td>
                 <td>{data.University}</td>
                 <td>{data.subject1}</td>

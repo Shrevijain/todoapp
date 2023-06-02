@@ -1,4 +1,4 @@
-function Table({ tableData, handleDeleteRow }) {
+function Table({ tableData, handleDeleteRow, handleEditRow, defaultValue }) {
   return (
     <table className="table">
       <thead>
@@ -6,8 +6,6 @@ function Table({ tableData, handleDeleteRow }) {
           <th>S.No.</th>
           <th>StudentName</th>
           <th>University</th>
-          {/* <th>State</th> */}
-          {/* <th>SelectOption</th> */}
           <th>Subject1</th>
           <th>Subject2</th>
           <th>Subject3</th>
@@ -17,25 +15,32 @@ function Table({ tableData, handleDeleteRow }) {
 
         {tableData.map((data, index) => {
           return (
-            <tr key={index}>
-              <td>{index + 101}</td>
-              <td>{data.StudentName}</td>
-              <td>{data.University}</td>
-              {/* <td>{data.State}</td> */}
-              {/* <td>{data.SelectOption}</td> */}
-              <td>{data.subject1}</td>
-              <td>{data.subject2}</td>
-              <td>{data.subject3}</td>
-              <td>{data.gender}</td>
-              <td>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleDeleteRow(index)}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
+            defaultValue || (
+              <tr key={index}>
+                <td>{index}</td>
+                <td>{data.StudentName}</td>
+                <td>{data.University}</td>
+                <td>{data.subject1}</td>
+                <td>{data.subject2}</td>
+                <td>{data.subject3}</td>
+                <td>{data.gender}</td>
+                <td>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => handleEditRow(index)}
+                  >
+                    Edit
+                  </button>
+                  &nbsp;
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => handleDeleteRow(index)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            )
           );
         })}
       </thead>

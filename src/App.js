@@ -36,8 +36,10 @@ function App() {
     ];
     setTodoList(copy);
   };
+
   const [tableData, setTableData] = useState([]);
-  const [selected, setSelected] = useState({ SelectOption: "" });
+  const [selected, setSelected] = useState({});
+  const [rowEdit, setRowEdit] = useState(null);
   const [formInputData, setformInputData] = useState({
     StudentName: "",
     University: "",
@@ -69,34 +71,45 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(formInputData);
-
-    const checkEmptyInput = !Object.values(formInputData).every(
-      (res) => res === ""
-    );
-    if (checkEmptyInput) {
-      const newData = (array) => [...array, formInputData];
-      setTableData(newData);
-      setformInputData({
-        StudentName: "",
-        University: "",
-        subject1: "",
-        subject2: "",
-        subject3: "",
-        gender: "",
-      });
-    }
+    // const checkEmptyInput = !Object.values(formInputData).every(
+    //   (res) => res === ""
+    // );
+    //if (checkEmptyInput) {
+    const newData = (array) => [...array, formInputData];
+    setTableData(newData);
+    setformInputData({
+      StudentName: "",
+      University: "",
+      subject1: "",
+      subject2: "",
+      subject3: "",
+      gender: "",
+    });
+    //}
   };
 
   const handleDeleteRow = (index) => {
     const newRow = [...tableData];
-    const deleteRow = tableData.findIndex((data) => data.index === index);
+    const deleteRow = tableData.findIndex((data) =>
+      console.log(data.index, index)
+    );
     newRow.splice(deleteRow, 1);
     setTableData(newRow);
   };
 
+  const handleEditRow = (index) => {
+    console.log("editRowCalled");
+    let rowEdit = tableData[index];
+    setRowEdit(tableData[index]);
+    setformInputData(rowEdit);
+    handleDeleteRow(true);
+    //console.log("rowedit", rowEdit);
+    //console.log("tabledata", tableData[index]);
+  };
+
   const handleFilterSubmit = (event) => {
     event.preventDefault();
-    //console.log(tableData);
+    console.log(tableData);
     //console.log(selected);
     if (!selected) {
       return tableData;
@@ -114,7 +127,7 @@ function App() {
   return (
     <div className="App">
       <br />
-      <a href="NewPage.js" target="_blank">
+      <a href="./NewPage" target="_blank">
         New Page
       </a>
       <Header></Header>
@@ -126,7 +139,10 @@ function App() {
       />
       <ToDoForm addTask={addTask} />
       <br></br>
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={handleSubmit}
+        defaultValue={rowEdit !== null && formInputData[rowEdit]}
+      >
         <div className="form-row row">
           <div className="col">
             <input
@@ -146,7 +162,7 @@ function App() {
               className="form-control"
             >
               <option className="form-control" name="University" value="">
-                --Select your Universty--
+                --Select your University--
               </option>
               <option name="University">aa</option>
               <option name="University">bb</option>
@@ -160,7 +176,7 @@ function App() {
             <br></br>
             <input
               type="checkbox"
-              checked={formInputData.name}
+              checked={formInputData.subject1}
               onChange={handleInputChange}
               name="subject1"
               value="x"
@@ -168,7 +184,7 @@ function App() {
             <label>x</label>
             <input
               type="checkbox"
-              checked={formInputData.name}
+              checked={formInputData.subject2}
               onChange={handleInputChange}
               name="subject2"
               value="y"
@@ -176,7 +192,7 @@ function App() {
             <label>y</label>
             <input
               type="checkbox"
-              checked={formInputData.name}
+              checked={formInputData.subject3}
               onChange={handleInputChange}
               name="subject3"
               value="z"
@@ -218,22 +234,6 @@ function App() {
             <Select options={option} onChange={handleSelectChange} />
           </div>
 
-          {/* <div className="col">
-            <select
-              list="data"
-              name="SelectOption"
-              onChange={handleSelectChange}
-              value={selected.SelectOption}
-              placeholder="Select your University"
-            >     
-            <option name="SelectedOption" value="">Filter University</option>      
-              <option name="SelectOption">aa</option>
-              <option name="SelectOption">bb</option>
-              <option name="SelectOption">cc</option>
-              <option name="SelectOption">dd</option>
-              </select> 
-          </div> */}
-
           <div className="col">
             <input type="submit" className="btn btn-primary" />
           </div>
@@ -241,11 +241,13 @@ function App() {
       </form>
       <br />
       <br />
-      <Table tableData={tableData} handleDeleteRow={handleDeleteRow} />
+      <Table
+        tableData={tableData}
+        handleDeleteRow={handleDeleteRow}
+        handleEditRow={handleEditRow}
+      />
     </div>
   );
 }
 
 export default App;
-{
-}

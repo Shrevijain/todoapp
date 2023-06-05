@@ -90,26 +90,57 @@ function App() {
 
   const handleDeleteRow = (index) => {
     const newRow = [...tableData];
-    const deleteRow = tableData.findIndex((data) =>
-      console.log(data.index, index)
-    );
-    newRow.splice(deleteRow, 1);
-    setTableData(newRow);
+    let deleteRow = tableData.filter((data, key) => {
+      return key != index;
+    });
+
+    console.log(deleteRow);
+    //newRow.slice(deleteRow, 1);
+    setTableData(deleteRow);
+
+    // const deleteRow = tableData.findIndex(
+    //   (data) => tableData[index].StudentName == data.StudentName
+    // );
+    // newRow.splice(deleteRow, 1);
+    // setTableData(newRow);
+
+    // const deleteRow = tableData.findIndex((data) => data.index === index);
+    // newRow.splice(deleteRow, 1);
+    // setTableData(newRow);
+
+    // const deleteRow = tableData.findIndex(
+    //   (data) => data.StudentName == tableData[index].StudentName
+    // );
+    // console.log(deleteRow);
+    // newRow.splice(deleteRow, 1);
+    // setTableData(newRow);
   };
 
   const handleEditRow = (index) => {
-    console.log("editRowCalled");
+    //console.log("editRowCalled");
     let rowEdit = tableData[index];
     setRowEdit(tableData[index]);
     setformInputData(rowEdit);
-    handleDeleteRow(true);
-    //console.log("rowedit", rowEdit);
-    //console.log("tabledata", tableData[index]);
+
+    let deleteRow = tableData.filter((data, key) => {
+      return key != index;
+    });
+    //console.log(deleteRow);
+    setTableData(deleteRow);
+
+    //tableData.filter((data, key) => console.log(data, key));
+    //console.log(tableData);
+    //handleDeleteRow(true);
+    // console.log("tabledata", tableData[index]);
+
+    // console.log("rowedit", rowEdit);
+    // console.log("tabledata", tableData[index]);
+    // console.log(tableData);
   };
 
   const handleFilterSubmit = (event) => {
     event.preventDefault();
-    console.log(tableData);
+    //console.log(tableData);
     //console.log(selected);
     if (!selected) {
       return tableData;
@@ -121,15 +152,15 @@ function App() {
     });
 
     setTableData(filtered);
-    console.log(filtered);
+    //console.log(filtered);
   };
 
   return (
     <div className="App">
-      <br />
+      {/* <br />
       <a href="./NewPage" target="_blank">
         New Page
-      </a>
+      </a> */}
       <Header></Header>
 
       <TodoList

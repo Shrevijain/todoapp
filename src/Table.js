@@ -1,4 +1,4 @@
-function Table({ tableData, handleDeleteRow, handleEditRow, defaultValue }) {
+function Table({ tableData, handleDeleteRow, handleEditRow }) {
   return (
     <table className="table">
       <thead>
@@ -15,32 +15,30 @@ function Table({ tableData, handleDeleteRow, handleEditRow, defaultValue }) {
 
         {tableData.map((data, index) => {
           return (
-            defaultValue || (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td>{data.StudentName}</td>
-                <td>{data.University}</td>
-                <td>{data.subject1}</td>
-                <td>{data.subject2}</td>
-                <td>{data.subject3}</td>
-                <td>{data.gender}</td>
-                <td>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => handleEditRow(index)}
-                  >
-                    Edit
-                  </button>
-                  &nbsp;
-                  <button
-                    className="btn btn-danger"
-                    onClick={() => handleDeleteRow(index)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            )
+            <tr key={index}>
+              <td>{index + 1}</td>
+              <td>{data.StudentName}</td>
+              <td>{data.University}</td>
+              <td>{data.subject1}</td>
+              <td>{data.subject2}</td>
+              <td>{data.subject3}</td>
+              <td>{data.gender}</td>
+              <td>
+                <button
+                  className="btn btn-primary"
+                  onClick={() => handleEditRow(index)}
+                >
+                  Edit
+                </button>
+                &nbsp;
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDeleteRow(index)}
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
           );
         })}
       </thead>

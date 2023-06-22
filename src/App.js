@@ -1,42 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import Header from "./Header";
-import data from "./data.json";
-import TodoList from "./TodoList";
-import ToDoForm from "./ToDoForm";
 import Select from "react-select";
 //import { Link, Route, Routes } from "react-router-dom";
 import Table from "./Table";
+import ContentLoader from "react-content-loader";
 // import { faRandom } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
-  const [todoList, setTodoList] = useState(data);
+  const [loading, setLoading] = useState(true);
 
-  const handleToggle = (id) => {
-    let mapped = todoList.map((task) => {
-      return task.id === Number(id)
-        ? { ...task, complete: !task.complete }
-        : { ...task };
-    });
-    setTodoList(mapped);
-  };
-
-  const handleFilter = () => {
-    let filtered = todoList.filter((task) => {
-      return !task.complete;
-    });
-    setTodoList(filtered);
-  };
-
-  const addTask = (userInput) => {
-    let copy = [...todoList];
-    copy = [
-      ...copy,
-      { id: todoList.length + 1, task: userInput, complete: false },
-    ];
-    setTodoList(copy);
-  };
-
+  useEffect(() => {
+    const t = setTimeout(() => {
+      //setLoading(false);
+    }, 5000);
+    return () => {
+      clearTimeout(t);
+    };
+  }, []);
   const [tableData, setTableData] = useState([]);
   const [selected, setSelected] = useState({});
   const [rowEdit, setRowEdit] = useState(null);
@@ -157,23 +138,11 @@ function App() {
 
   return (
     <div className="App">
-      {/* <br />
-      <a href="./NewPage" target="_blank">
-        New Page
-      </a> */}
+      {/* {loading ? (<></>):()} */}
+      {/* <ContentLoader speed={2} width={1000} height={200}></ContentLoader> */}
       <Header></Header>
-
-      <TodoList
-        todoList={todoList}
-        handleToggle={handleToggle}
-        handleFilter={handleFilter}
-      />
-      <ToDoForm addTask={addTask} />
-      <br></br>
-      <form
-        onSubmit={handleSubmit}
-        defaultValue={rowEdit !== null && formInputData[rowEdit]}
-      >
+      <form onSubmit={handleSubmit}>
+        {/* defaultValue={rowEdit !== null && formInputData[rowEdit]} */}
         <div className="form-row row">
           <div className="col">
             <input
@@ -203,8 +172,11 @@ function App() {
           </div>
 
           <div className="col">
-            <label>Subject</label>
-            <br></br>
+            <label>
+              {" "}
+              <b> Subject </b>
+            </label>
+            <br />
             <input
               type="checkbox"
               checked={formInputData.subject1}
@@ -212,7 +184,7 @@ function App() {
               name="subject1"
               value="x"
             />
-            <label>x</label>
+            <label>x</label>&nbsp;
             <input
               type="checkbox"
               checked={formInputData.subject2}
@@ -220,7 +192,7 @@ function App() {
               name="subject2"
               value="y"
             />
-            <label>y</label>
+            <label>y</label>&nbsp;
             <input
               type="checkbox"
               checked={formInputData.subject3}
@@ -232,7 +204,11 @@ function App() {
           </div>
 
           <div className="col">
-            <label>Gender</label> <br></br>
+            <label>
+              {" "}
+              <b> Gender </b>
+            </label>{" "}
+            <br />
             <input
               type="radio"
               name="gender"
@@ -240,7 +216,7 @@ function App() {
               onChange={handleInputChange}
               value="Male"
             />
-            <label>Male</label>
+            <label>Male</label>&nbsp;
             <input
               type="radio"
               name="gender"
